@@ -1,62 +1,42 @@
 #include <bits/stdc++.h>
-#include <iostream>
-#pragma GCC optimize("Ofast")
+typedef long long ll;
 using namespace std;
-int N=6;
-
-#define NL "\n"
-#define int long long int
-#define all(x) x.begin() x.end()
-const int mod = 1e9 + 7;
-
-void readInputFile()
+int mod(int a, int b)
 {
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
-}
-
-int N;
-
-int minCost(int a, int b)
-{
-    return a > b ? b : a;
-}
-
-int minJump(int *a, int i)
-{
-    if (i + 1 == N)
+    if (a > b)
     {
-        return 0;
+        return (a - b);
     }
-
-    if (i + 2 == N)
+    else
     {
-        return minJump(a, i + 1) + llabs(a[i] - a[i + 1]);
+        return (b - a);
     }
-
-    return minCost(minJump(a, i + 1) + llabs(a[i] - a[i + 1]), minJump(a, i + 2) + llabs(a[i] - a[i + 2]));
 }
-
-void solve()
+int main()
 {
-    cout<<"\n The number of stones is 6 ...";
-    int arr[N];
-    for (size_t i = 0; i < N; i++)
+    int n, k, i, j;
+    cin >> n >> k;
+    int ht[n], cst[n + 1];
+    cst[0] = cst[1] = 0;
+    for (i = 0; i < n; i++)
     {
-        cin >> arr[i];
+        cin >> ht[i];
     }
-
-    cout << minJump(arr, 0);
-}
-
-int32_t main()
-{
-    std::ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
-    readInputFile();
-    solve();
-
+    for (i = 2; i <= n; i++)
+    {
+        cst[i] = 999;
+        for (j = i - 1; j >= i - k; j--)
+        {
+            if (cst[i] > (cst[j] + mod(ht[j], ht[i])))
+            {
+                cout << "\n -> " << mod(ht[j], ht[i]);
+                cst[i] = cst[j] + mod(ht[j], ht[i]);
+            }
+        }
+    }
+    for (i = 1; i < n; i++)
+    {
+        cout << "\n " << cst[i];
+    }
     return 0;
 }
